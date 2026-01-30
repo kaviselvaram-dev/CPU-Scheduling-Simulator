@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ algo }} - Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>{{ algo }} Results</h1>
+
+    <table>
+        <tr>
+            <th>Process</th>
+            <th>Arrival</th>
+            <th>Burst</th>
+            <th>Priority</th>
+            <th>Start</th>
+            <th>Finish</th>
+            <th>Turnaround Time</th>
+            <th>Waiting Time</th>
+        </tr>
+        {% for r in results %}
+        <tr>
+            <td>{{ r.name }}</td>
+            <td>{{ r.arrival }}</td>
+            <td>{{ r.burst }}</td>
+            <td>{{ r.priority }}</td>
+            <td>{{ r.start }}</td>
+            <td>{{ r.finish }}</td>
+            <td>{{ r.tat }}</td>
+            <td>{{ r.wait }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Average Turnaround Time: {{ avg_tat }}</h3>
+    <h3>Average Waiting Time: {{ avg_wait }}</h3>
+
+    <h2>Gantt Chart</h2>
+    <canvas id="ganttChart" width="800" height="200"></canvas>
+
+    <a href="/">🔙 Back</a>
+
+    <script>
+        const ctx = document.getElementById('ganttChart').getContext('2d');
+        const processes = {{ results|tojson }};
+        
+        // Build Gantt chart dataset
+        const labels = processes.map(p => p.name);
+        const startTimes = processes.map(p => p.start);
+        const finishTimes = processes.map(p => p.finish);
+        const durations = processes.map(p => (p.finish != null && p.start != null) ? p.finish - p.start : 0);
+
+        const colors = [
+            '#007bff', '#28a745', '#ffc107', '#dc3545', '#6610f2',
+            '#20c997', '#fd7e14', '#6f42c1', '#17a2b8', '#e83e8c'
+        ];
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Execution Time',
+                    data: durations,
+                    backgroundColor: colors,
+                    borderColor: '#000',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                const i = ctx.dataIndex;
+                                return `Start: ${startTimes[i]}, Finish: ${finishTimes[i]}`;
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'CPU Scheduling Gantt Chart',
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time Units'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Processes'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

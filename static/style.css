@@ -1,0 +1,50 @@
+body {
+    background: #0b0b0b;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 30px;
+}
+
+h1 {
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffcc00;
+}
+
+input, select, button {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#addBtn {
+    background: #007bff;
+    color: white;
+}
+
+#runBtn {
+    background: #28a745;
+    color: white;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 8px;
+}
+
+a {
+    color: cyan;
+    text-decoration: none;
+}

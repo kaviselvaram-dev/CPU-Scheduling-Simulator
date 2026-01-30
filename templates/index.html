@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CPU Scheduling Simulator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>⚙️ CPU Scheduling Simulator</h1>
+
+  <div class="form-container">
+    <label>Select Algorithm</label>
+    <select id="algorithm" name="algorithm">
+      <option>FCFS</option>
+      <option>SJF</option>
+      <option>SRTF</option>
+      <option>Priority (Non-Preemptive)</option>
+      <option>Priority (Preemptive)</option>
+      <option>Round Robin</option>
+    </select>
+
+    <div id="quantumField" style="display:none;">
+      <label>Quantum:</label>
+      <input type="number" id="quantum" min="1" value="2">
+    </div>
+
+    <h3>Enter Process Details</h3>
+    <div class="input-group">
+      <input type="text" id="pname" placeholder="Name">
+      <input type="number" id="arrival" placeholder="Arrival">
+      <input type="number" id="burst" placeholder="Burst">
+      <input type="number" id="priority" placeholder="Priority" style="display:none;">
+    </div>
+    <button id="addBtn">➕ Add Process</button>
+    <button id="runBtn">🚀 Run Simulation</button>
+  </div>
+
+  <form id="runForm" method="POST" action="/run" style="display:none;">
+    <input type="hidden" name="algorithm" id="algoInput">
+    <input type="hidden" name="quantum" id="quantumInput">
+    <div id="processInputs"></div>
+  </form>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
